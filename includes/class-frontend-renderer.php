@@ -47,12 +47,14 @@ class MWS_Frontend_Renderer
         }
 
         $ver = mws_get_version();
+        $css_ver = file_exists(MWS_PLUGIN_DIR . 'assets/css/frontend.css') ? filemtime(MWS_PLUGIN_DIR . 'assets/css/frontend.css') : $ver;
+        $js_ver  = file_exists(MWS_PLUGIN_DIR . 'assets/js/frontend.js') ? filemtime(MWS_PLUGIN_DIR . 'assets/js/frontend.js') : $ver;
 
         wp_enqueue_style(
             'mws-frontend-css',
             MWS_PLUGIN_URL . 'assets/css/frontend.css',
             array(),
-            $ver
+            $css_ver
         );
 
         // 注入自定义视觉变量
@@ -63,7 +65,7 @@ class MWS_Frontend_Renderer
             'mws-frontend-js',
             MWS_PLUGIN_URL . 'assets/js/frontend.js',
             array(),
-            $ver,
+            $js_ver,
             true
         );
 
