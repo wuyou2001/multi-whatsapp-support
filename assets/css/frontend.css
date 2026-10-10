@@ -13,37 +13,35 @@
   --mws-accent: #25d366;
   --mws-accent-hover: #1ebd59;
   --mws-text-main: #0f172a;
-  --mws-text-sub: #475569;
-  --mws-text-muted: #94a3b8;
+  --mws-text-sub: #334155;
+  --mws-text-muted: #64748b;
   --mws-border-light: #e2e8f0;
   --mws-bg-body: #f8fafc;
   --mws-radius-modal: 18px;
   --mws-radius-card: 12px;
-  --mws-shadow-modal: 0 20px 48px -10px rgba(15, 23, 42, 0.22), 0 6px 18px rgba(15, 23, 42, 0.08);
-  --mws-shadow-card: 0 2px 6px rgba(0, 0, 0, 0.03);
-  --mws-shadow-card-hover: 0 6px 16px rgba(37, 211, 102, 0.18);
+  --mws-shadow-modal: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 20px 48px -8px rgba(0, 0, 0, 0.16), 0 0 1px 1px rgba(0, 0, 0, 0.05);
+  --mws-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --mws-shadow-card-hover: 0 4px 14px rgba(37, 211, 102, 0.18), 0 1px 3px rgba(0, 0, 0, 0.06);
   --mws-float-x: 24px;
   --mws-float-y: 24px;
-  --mws-z-index: 99999;
+  --mws-z-index: 999999;
 }
 
 /* ==========================================================================
-   2. 全局毛玻璃遮罩 (Frosted Glass Backdrop)
+   2. 全局轻量遮罩 (Clean Subtle Backdrop - 无模糊滤镜，保持背景清晰)
    ========================================================================== */
 .mws-backdrop {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.18);
   z-index: calc(var(--mws-z-index) - 1);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .mws-backdrop.is-active {
@@ -53,29 +51,29 @@
 }
 
 /* ==========================================================================
-   3. 弹窗容器 (Popover Dialog Modal)
+   3. 弹窗容器 (Popover Dialog Modal - 纯净白底高质感卡片)
    ========================================================================== */
 .mws-popover {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
+  position: fixed;
   width: 350px;
   background: #ffffff;
   border-radius: var(--mws-radius-modal);
   box-shadow: var(--mws-shadow-modal);
-  border: 1px solid var(--mws-border-light);
+  border: 1px solid rgba(0, 0, 0, 0.07);
   z-index: var(--mws-z-index);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px) scale(0.97);
+  transform: translateY(8px) scale(0.97);
   transform-origin: top right;
-  transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.24s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .mws-popover.is-open {
@@ -173,7 +171,7 @@
   flex-direction: column;
   gap: 10px;
   background: var(--mws-bg-body);
-  max-height: 420px;
+  max-height: min(420px, calc(100vh - 160px));
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -190,7 +188,7 @@
   text-decoration: none !important;
   color: var(--mws-text-main) !important;
   box-shadow: var(--mws-shadow-card) !important;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   box-sizing: border-box !important;
   outline: none !important;
 }
@@ -221,7 +219,7 @@
   font-weight: 700;
   font-size: 12px;
   flex-shrink: 0;
-  border: 1px solid rgba(4, 120, 87, 0.12);
+  border: 1px solid rgba(4, 120, 87, 0.14);
 }
 
 .mws-card-info {
@@ -232,7 +230,7 @@
 }
 
 .mws-card-label {
-  font-size: 13px !important;
+  font-size: 13.5px !important;
   font-weight: 600 !important;
   color: var(--mws-text-main) !important;
   display: flex;
@@ -263,7 +261,7 @@
 }
 
 .mws-card-sub {
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--mws-text-muted);
   line-height: 1.2;
   white-space: nowrap;
@@ -296,8 +294,9 @@
 .mws-pop-footer {
   background: #ffffff;
   border-top: 1px solid #f1f5f9;
-  padding: 9px 15px;
-  font-size: 10.5px;
+  padding: 10px 15px;
+  font-size: 11px;
+  font-weight: 500;
   color: #64748b;
   text-align: center;
   display: flex;
@@ -558,20 +557,6 @@
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
-}
-
-/* 挂载到悬浮球时的 Popover 展开定位 */
-.mws-floating-wrap .mws-popover {
-  bottom: calc(100% + 14px);
-  top: auto;
-  right: 0;
-  transform-origin: bottom right;
-}
-
-.mws-floating-wrap.mws-pos-bottom-left .mws-popover {
-  right: auto;
-  left: 0;
-  transform-origin: bottom left;
 }
 
 /* ==========================================================================

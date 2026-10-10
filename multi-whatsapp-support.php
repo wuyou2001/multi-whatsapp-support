@@ -3,7 +3,7 @@
  * Plugin Name: Multi WhatsApp Support (企业级多客服 WhatsApp 支持)
  * Plugin URI: https://github.com/wuyou2001/multi-whatsapp-support
  * Description: 高端企业级多客服 WhatsApp 沟通套件。支持多通道客服矩阵、全自动 Header 导航挂载、全局悬浮气泡、毛玻璃微阴影质感、智能移动端自适应与短代码 [whatsapp_support]，内置 GitHub 静默自动更新。
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Wwnine
  * Author URI: https://github.com/wuyou2001
  * Text Domain: multi-whatsapp-support
@@ -31,7 +31,7 @@ function mws_get_version()
         $file_data = function_exists('get_file_data')
             ? get_file_data(MWS_PLUGIN_FILE, array('Version' => 'Version'))
             : array();
-        $version = !empty($file_data['Version']) ? trim($file_data['Version']) : '1.0.0';
+        $version = !empty($file_data['Version']) ? trim($file_data['Version']) : '1.0.1';
     }
     return $version;
 }

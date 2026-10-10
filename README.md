@@ -1,6 +1,6 @@
 # Multi WhatsApp Support (企业级多客服 WhatsApp 支持)
 
-[![Version](https://img.shields.io/badge/version-1.0.0-emerald.svg)](https://github.com/wuyou2001/multi-whatsapp-support)
+[![Version](https://img.shields.io/badge/version-1.0.1-emerald.svg)](https://github.com/wuyou2001/multi-whatsapp-support)
 [![WordPress](https://img.shields.io/badge/WordPress-5.4+-blue.svg)](https://wordpress.org)
 [![PHP](https://img.shields.io/badge/PHP-7.4+-777bb4.svg)](https://php.net)
 [![License](https://img.shields.io/badge/License-GPLv2-orange.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
@@ -32,7 +32,7 @@
 - ⚡ **短代码与主题开发支持**：
   - 提供功能丰富的 `[whatsapp_support]` 短代码与标准 PHP 辅助函数 `mws_render_whatsapp()`。
 - 🔄 **全自动静默在线更新 (Silent GitHub Updater)**：
-  - 严格遵循 `AGENTS.md` 规范：以主文件头 `* Version: 1.0.0` 为**单点真实源**；
+  - 严格遵循 `AGENTS.md` 规范：以主文件头 `* Version: 1.0.1` 为**单点真实源**；
   - 后台全自动静默检测 GitHub Releases 与 Tags，严禁在用户设置页添加任何杂乱配置，保障纯净体验。
 
 ---
