@@ -1,0 +1,686 @@
+/**
+ * Multi WhatsApp Support - 前端精美毛玻璃与微阴影样式
+ * 承袭 eclara.shop 高端奢华电商级交互质感
+ */
+
+/* ==========================================================================
+   1. 基础变量与重置
+   ========================================================================== */
+:root {
+  --mws-g-start: #075e54;
+  --mws-g-mid: #128c7e;
+  --mws-g-end: #25d366;
+  --mws-accent: #25d366;
+  --mws-accent-hover: #1ebd59;
+  --mws-text-main: #0f172a;
+  --mws-text-sub: #475569;
+  --mws-text-muted: #94a3b8;
+  --mws-border-light: #e2e8f0;
+  --mws-bg-body: #f8fafc;
+  --mws-radius-modal: 18px;
+  --mws-radius-card: 12px;
+  --mws-shadow-modal: 0 20px 48px -10px rgba(15, 23, 42, 0.22), 0 6px 18px rgba(15, 23, 42, 0.08);
+  --mws-shadow-card: 0 2px 6px rgba(0, 0, 0, 0.03);
+  --mws-shadow-card-hover: 0 6px 16px rgba(37, 211, 102, 0.18);
+  --mws-float-x: 24px;
+  --mws-float-y: 24px;
+  --mws-z-index: 99999;
+}
+
+/* ==========================================================================
+   2. 全局毛玻璃遮罩 (Frosted Glass Backdrop)
+   ========================================================================== */
+.mws-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: calc(var(--mws-z-index) - 1);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mws-backdrop.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   3. 弹窗容器 (Popover Dialog Modal)
+   ========================================================================== */
+.mws-popover {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 350px;
+  background: #ffffff;
+  border-radius: var(--mws-radius-modal);
+  box-shadow: var(--mws-shadow-modal);
+  border: 1px solid var(--mws-border-light);
+  z-index: var(--mws-z-index);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.97);
+  transform-origin: top right;
+  transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mws-popover.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* 弹窗 Header */
+.mws-pop-header {
+  background: linear-gradient(135deg, var(--mws-g-start) 0%, var(--mws-g-mid) 50%, var(--mws-g-end) 100%);
+  color: #ffffff;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.mws-pop-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mws-pop-header-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.mws-pop-header-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+  fill: #ffffff !important;
+  display: block !important;
+}
+
+.mws-pop-header-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.mws-pop-header-title {
+  font-size: 15.5px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.2px;
+}
+
+.mws-pop-header-subtitle {
+  font-size: 11.5px !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin: 3px 0 0 0 !important;
+  padding: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.mws-pop-close {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border: none !important;
+  color: #ffffff !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  padding: 0 !important;
+  outline: none !important;
+  line-height: 1 !important;
+}
+
+.mws-pop-close:hover {
+  background: rgba(255, 255, 255, 0.32) !important;
+  transform: rotate(90deg);
+}
+
+/* 弹窗 Body */
+.mws-pop-body {
+  padding: 14px 15px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--mws-bg-body);
+  max-height: 420px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* 通道卡片 (Channel Card) */
+.mws-card {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: #ffffff !important;
+  border: 1px solid var(--mws-border-light) !important;
+  border-radius: var(--mws-radius-card) !important;
+  padding: 11px 13px !important;
+  text-decoration: none !important;
+  color: var(--mws-text-main) !important;
+  box-shadow: var(--mws-shadow-card) !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+}
+
+.mws-card:hover {
+  border-color: var(--mws-accent) !important;
+  box-shadow: var(--mws-shadow-card-hover) !important;
+  transform: translateY(-1.5px) !important;
+  background: #ffffff !important;
+}
+
+.mws-card-left {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.mws-card-badge-num {
+  width: 26px;
+  height: 26px;
+  background: #ecfdf5;
+  color: #047857;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+  border: 1px solid rgba(4, 120, 87, 0.12);
+}
+
+.mws-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mws-card-label {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--mws-text-main) !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.25;
+}
+
+.mws-card-online-dot {
+  width: 7px;
+  height: 7px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.mws-card-phone {
+  font-size: 12.5px;
+  color: var(--mws-text-sub);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mws-card-sub {
+  font-size: 10.5px;
+  color: var(--mws-text-muted);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mws-card-btn {
+  background: var(--mws-accent);
+  color: #ffffff !important;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(37, 211, 102, 0.28);
+}
+
+.mws-card:hover .mws-card-btn {
+  background: var(--mws-accent-hover);
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.4);
+  transform: translateX(1px);
+}
+
+/* 弹窗 Footer */
+.mws-pop-footer {
+  background: #ffffff;
+  border-top: 1px solid #f1f5f9;
+  padding: 9px 15px;
+  font-size: 10.5px;
+  color: #64748b;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.1px;
+}
+
+/* ==========================================================================
+   4. 顶部 Header 挂载组件样式
+   ========================================================================== */
+.mws-header-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+/* 桌面端 Header 触发按钮 */
+.mws-header-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 6px 12px 6px 7px !important;
+  background: rgba(37, 211, 102, 0.08) !important;
+  border: 1px solid rgba(37, 211, 102, 0.28) !important;
+  border-radius: 30px !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  transition: all 0.22s ease !important;
+  line-height: 1 !important;
+  outline: none !important;
+  margin: 0 8px !important;
+  box-sizing: border-box !important;
+}
+
+.mws-header-btn:hover {
+  background: rgba(37, 211, 102, 0.15) !important;
+  border-color: rgba(37, 211, 102, 0.55) !important;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.16) !important;
+}
+
+.mws-header-btn-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--mws-accent);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(37, 211, 102, 0.35);
+}
+
+.mws-header-btn-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+  fill: #ffffff !important;
+  display: block !important;
+}
+
+/* 呼吸脉冲动画点 */
+.mws-pulse-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  top: -1px;
+  right: -1px;
+  background: #22c55e;
+  border: 1.5px solid #ffffff;
+  border-radius: 50%;
+  animation: mwsPulseAnim 2s infinite ease-in-out;
+}
+
+@keyframes mwsPulseAnim {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  70% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+.mws-header-btn-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.mws-header-btn-tag {
+  font-size: 9px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #15803d;
+  font-weight: 700;
+}
+
+.mws-header-btn-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mws-text-main);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.mws-header-btn-caret {
+  transition: transform 0.22s ease;
+}
+
+.mws-header-wrapper.is-open .mws-header-btn-caret {
+  transform: rotate(180deg);
+}
+
+/* 移动端 Header 挂载圆形触发器 */
+.mws-mobile-header-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  background: var(--mws-accent) !important;
+  color: #ffffff !important;
+  border: none !important;
+  cursor: pointer !important;
+  position: relative !important;
+  margin: 0 6px !important;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.35) !important;
+  outline: none !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+.mws-mobile-header-btn svg {
+  width: 20px !important;
+  height: 20px !important;
+  fill: #ffffff !important;
+  display: block !important;
+}
+
+/* ==========================================================================
+   5. 全局悬浮气泡球 (Floating Action Bubble)
+   ========================================================================== */
+.mws-floating-wrap {
+  position: fixed;
+  z-index: calc(var(--mws-z-index) - 2);
+  display: flex;
+  align-items: center;
+}
+
+/* 四个挂载角位置 */
+.mws-floating-wrap.mws-pos-bottom-right {
+  bottom: var(--mws-float-y);
+  right: var(--mws-float-x);
+}
+
+.mws-floating-wrap.mws-pos-bottom-left {
+  bottom: var(--mws-float-y);
+  left: var(--mws-float-x);
+}
+
+.mws-floating-wrap.mws-pos-top-right {
+  top: var(--mws-float-y);
+  right: var(--mws-float-x);
+}
+
+.mws-floating-wrap.mws-pos-top-left {
+  top: var(--mws-float-y);
+  left: var(--mws-float-x);
+}
+
+/* 浮动按钮主体 */
+.mws-floating-btn {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, var(--mws-g-mid) 0%, var(--mws-accent) 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4), 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  outline: none !important;
+  padding: 0 !important;
+}
+
+.mws-floating-btn:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 8px 26px rgba(37, 211, 102, 0.55), 0 3px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+.mws-floating-btn:active {
+  transform: scale(0.96) !important;
+}
+
+.mws-floating-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mws-floating-icon svg {
+  width: 29px !important;
+  height: 29px !important;
+  fill: #ffffff !important;
+  display: block !important;
+}
+
+.mws-floating-icon .mws-pulse-dot {
+  top: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+}
+
+/* 浮动球悬停 Tooltip */
+.mws-floating-tooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  background: #0f172a;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(6px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mws-pos-bottom-left .mws-floating-tooltip,
+.mws-pos-top-left .mws-floating-tooltip {
+  right: auto;
+  left: calc(100% + 12px);
+  transform: translateX(-6px);
+}
+
+.mws-floating-wrap:hover .mws-floating-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* 挂载到悬浮球时的 Popover 展开定位 */
+.mws-floating-wrap .mws-popover {
+  bottom: calc(100% + 14px);
+  top: auto;
+  right: 0;
+  transform-origin: bottom right;
+}
+
+.mws-floating-wrap.mws-pos-bottom-left .mws-popover {
+  right: auto;
+  left: 0;
+  transform-origin: bottom left;
+}
+
+/* ==========================================================================
+   6. 移动端自适应与模态展开 (Mobile Responsive)
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* 移动端固定底部抽屉式模态框 */
+  .mws-popover {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 20px !important;
+    left: 16px !important;
+    right: 16px !important;
+    width: auto !important;
+    max-width: 380px !important;
+    margin: 0 auto !important;
+    border-radius: 20px !important;
+    transform: translateY(24px) scale(0.96) !important;
+    transform-origin: center bottom !important;
+  }
+
+  .mws-popover.is-open {
+    transform: translateY(0) scale(1) !important;
+  }
+
+  /* 移动端隐藏浮动球开关 */
+  .mws-hide-mobile {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   7. 短代码组件 (Shortcode Component Styles)
+   ========================================================================== */
+.mws-shortcode-btn-wrap {
+  display: inline-block;
+  margin: 10px 0;
+}
+
+.mws-shortcode-btn-wrap.mws-align-center {
+  display: flex;
+  justify-content: center;
+}
+
+.mws-shortcode-btn-wrap.mws-align-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mws-shortcode-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  padding: 10px 20px !important;
+  background: linear-gradient(135deg, var(--mws-g-mid) 0%, var(--mws-accent) 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 30px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35) !important;
+  transition: all 0.22s ease !important;
+  outline: none !important;
+  text-decoration: none !important;
+}
+
+.mws-shortcode-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5) !important;
+}
+
+.mws-shortcode-btn-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+  fill: #ffffff !important;
+  display: block !important;
+}
+
+/* 页面内平铺卡片模式 (Shortcode mode="cards") */
+.mws-shortcode-cards-wrap {
+  margin: 24px 0;
+  max-width: 480px;
+}
+
+.mws-shortcode-cards-wrap.mws-align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mws-shortcode-cards-wrap.mws-align-right {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.mws-shortcode-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--mws-text-main);
+  margin-bottom: 12px;
+}
+
+.mws-shortcode-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mws-shortcode-single-card {
+  max-width: 400px;
+  margin: 10px 0;
+}
