@@ -356,6 +356,9 @@
 .mws-header-btn-icon svg {
   width: 18px !important;
   height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  flex-shrink: 0 !important;
   fill: #ffffff !important;
   display: block !important;
 }
@@ -443,6 +446,9 @@
 .mws-mobile-header-btn svg {
   width: 20px !important;
   height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  flex-shrink: 0 !important;
   fill: #ffffff !important;
   display: block !important;
 }
@@ -516,6 +522,9 @@
 .mws-floating-icon svg {
   width: 29px !important;
   height: 29px !important;
+  min-width: 29px !important;
+  min-height: 29px !important;
+  flex-shrink: 0 !important;
   fill: #ffffff !important;
   display: block !important;
 }
