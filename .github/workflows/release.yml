@@ -1,0 +1,52 @@
+name: Build and Release WordPress Plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Prepare Plugin Package
+        run: |
+          PLUGIN_SLUG="multi-whatsapp-support"
+          STAGING_DIR=$(mktemp -d)
+          TARGET_DIR="${STAGING_DIR}/${PLUGIN_SLUG}"
+          mkdir -p "$TARGET_DIR"
+
+          # 兼容仓库根目录即插件源码，或仓库内包含同名子目录两种形态
+          if [ -d "$PLUGIN_SLUG" ] && [ -f "$PLUGIN_SLUG/$PLUGIN_SLUG.php" ]; then
+            cp -r "$PLUGIN_SLUG"/* "$TARGET_DIR/"
+          else
+            find . -maxdepth 1 ! -name "." ! -name ".." ! -name ".git" ! -name ".github" ! -name "*.zip" -exec cp -r {} "$TARGET_DIR/" \;
+          fi
+
+          cd "$STAGING_DIR"
+          zip -q -r "${PLUGIN_SLUG}.zip" "$PLUGIN_SLUG"
+          mv "${PLUGIN_SLUG}.zip" "$GITHUB_WORKSPACE/"
+          rm -rf "$STAGING_DIR"
+
+          echo "ZIP_NAME=${PLUGIN_SLUG}.zip" >> $GITHUB_ENV
+          echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Create Official GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ env.TAG_NAME }}
+          body: |
+            ## 🚀 WordPress 插件自动构建发行版
+            
+            - **版本号**：${{ env.TAG_NAME }}
+            - **自动更新支持**：已安装旧版的 WordPress 站点将在后台自动收到更新提示，并支持一键在线升级。
+          files: |
+            ${{ env.ZIP_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
